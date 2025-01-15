@@ -1,91 +1,132 @@
-function calculateDiscount(user) {
-    if (user) {
-        if (user.isPremium) {
-            if (user.purchaseAmount > 1000) {
-                return user.purchaseAmount * 0.2;
-            }
-        }
+function processOrder(order) {
+  if (order) {
+    if (order.items && order.items.length > 0) {
+      if (order.payment && order.payment.status === "paid") {
+        console.log("Обробка замовлення:", order.id);
+      } else {
+        console.log("Оплата не завершена для замовлення:", order.id);
+      }
+    } else {
+      console.log("Замовлення не містить товарів:", order.id);
     }
-    return 0;
+  } else {
+    console.log("Неправильне замовлення.");
+  }
 }
 
-function calculateDiscount(user) {
-    if (!user) return 0;
-    if (!user.isPremium) return 0;
-    if (user.purchaseAmount <= 1000) return 0;
-    return user.purchaseAmount * 0.2;
+
+function processOrder(order) {
+  if (!order) {
+    console.log("Неправильне замовлення.");
+    return;
+  }
+
+  if (!order.items || order.items.length === 0) {
+    console.log("Замовлення не містить товарів:", order.id);
+    return;
+  }
+
+  if (!order.payment || order.payment.status !== "paid") {
+    console.log("Оплата не завершена для замовлення:", order.id);
+    return;
+  }
+
+  console.log("Обробка замовлення:", order.id);
 }
 
-
-// 
-class Classroom {
-    constructor() {
-        this.students = [];
-    }
-}
-
-const classroom = new Classroom();
-classroom.students.push("John");
-classroom.students.push("Jane");
-
-
-class Classroom {
-    constructor() {
-        this._students = [];
-    }
-
-    addStudent(student) {
-        this._students.push(student);
-    }
-
-    getStudents() {
-        return [...this._students];
-    }
-}
-
-const classroom = new Classroom();
-classroom.addStudent("John");
-classroom.addStudent("Jane");
-
-
-// 
-
-function getShippingCost(order) {
-    switch (order.type) {
-        case "standard":
-            return 5;
-        case "express":
-            return 10;
-        case "overnight":
-            return 20;
-        default:
-            throw new Error("Unknown order type");
-    }
-}
 
 class Order {
-    getShippingCost() {
-        throw new Error("Must be implemented in subclass");
+  constructor() {
+    this.items = [];
+  }
+
+  addItem(item) {
+    this.items.push(item);
+  }
+
+  removeItem(item) {
+    const index = this.items.indexOf(item);
+    if (index > -1) {
+      this.items.splice(index, 1);
     }
+  }
 }
 
-class StandardOrder extends Order {
-    getShippingCost() {
-        return 5;
+const order = new Order();
+order.items.push("товар 1"); // Прямий доступ до колекції
+console.log(order.items);
+
+
+
+class Order {
+  constructor() {
+    this._items = []; // Інкапсульована колекція
+  }
+
+  addItem(item) {
+    this._items.push(item);
+  }
+
+  removeItem(item) {
+    const index = this._items.indexOf(item);
+    if (index > -1) {
+      this._items.splice(index, 1);
     }
+  }
+
+  getItems() {
+    return [...this._items]; // Повертаємо копію колекції
+  }
 }
 
-class ExpressOrder extends Order {
-    getShippingCost() {
-        return 10;
+const order = ne
+
+
+class Employee {
+  constructor(type) {
+    this.type = type;
+  }
+
+  calculatePay() {
+    if (this.type === "manager") {
+      return 5000;
+    } else if (this.type === "developer") {
+      return 4000;
+    } else if (this.type === "intern") {
+      return 2000;
     }
+    return 0;
+  }
 }
 
-class OvernightOrder extends Order {
-    getShippingCost() {
-        return 20;
-    }
+const manager = new Employee("manager");
+console.log(manager.calculatePay());
+
+
+
+class Employee {
+  calculatePay() {
+    throw new Error("Метод має бути реалізований у підкласі.");
+  }
 }
 
-const order = new ExpressOrder();
-console.log(order.getShippingCost()); // 10
+class Manager extends Employee {
+  calculatePay() {
+    return 5000;
+  }
+}
+
+class Developer extends Employee {
+  calculatePay() {
+    return 4000;
+  }
+}
+
+class Intern extends Employee {
+  calculatePay() {
+    return 2000;
+  }
+}
+
+const employees = [new Manager(), new Developer(), new Intern()];
+employees.forEach(employee => console.log(employee.calculatePay()));

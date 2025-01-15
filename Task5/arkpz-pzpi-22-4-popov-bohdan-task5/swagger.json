@@ -1,0 +1,583 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "AutoTrack API",
+    "version": "1.0.0",
+    "description": "API for managing the laboratory work projects"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/api/admin/vehicles": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Add a new vehicle to the system",
+        "description": "This endpoint allows for adding a new vehicle into the system.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "example": "Toyota Corolla"
+                  },
+                  "licensePlate": {
+                    "type": "string",
+                    "example": "ABC-1234"
+                  },
+                  "year": {
+                    "type": "integer",
+                    "example": 2021
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": ["active", "inactive"],
+                    "example": "active"
+                  }
+                },
+                "required": ["model", "licensePlate", "year"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully added the vehicle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "model": {
+                      "type": "string"
+                    },
+                    "licensePlate": {
+                      "type": "string"
+                    },
+                    "year": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Retrieve all vehicles",
+        "description": "This endpoint returns a list of all vehicles currently in the system.",
+        "responses": {
+          "200": {
+            "description": "List of all vehicles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "60f7c1b1b3d72c001c8e4c37"
+                      },
+                      "model": {
+                        "type": "string",
+                        "example": "Toyota Corolla"
+                      },
+                      "licensePlate": {
+                        "type": "string",
+                        "example": "ABC-1234"
+                      },
+                      "year": {
+                        "type": "integer",
+                        "example": 2021
+                      },
+                      "status": {
+                        "type": "string",
+                        "example": "active"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/vehicles/{id}": {
+      "delete": {
+        "tags": ["Admin"],
+        "summary": "Remove a vehicle by its ID",
+        "description": "Deletes a vehicle from the system using the provided vehicle ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The unique ID of the vehicle to delete",
+            "schema": {
+              "type": "string",
+              "example": "60f7c1b1b3d72c001c8e4c37"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vehicle successfully deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Vehicle deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Vehicle not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Vehicle not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Admin"],
+        "summary": "Update the details of a vehicle",
+        "description": "Update the information of an existing vehicle in the system.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The unique ID of the vehicle to update",
+            "schema": {
+              "type": "string",
+              "example": "60f7c1b1b3d72c001c8e4c37"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "example": "Honda Civic"
+                  },
+                  "licensePlate": {
+                    "type": "string",
+                    "example": "XYZ-5678"
+                  },
+                  "year": {
+                    "type": "integer",
+                    "example": 2022
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": ["active", "inactive"],
+                    "example": "inactive"
+                  }
+                },
+                "required": ["model", "licensePlate", "year"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated the vehicle",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "model": {
+                      "type": "string"
+                    },
+                    "licensePlate": {
+                      "type": "string"
+                    },
+                    "year": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Vehicle not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Vehicle not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/api/admin/users": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Retrieve the list of users",
+        "description": "Displays a list of all users. Accessible only to authorized members.",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the list of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          }
+        }
+      }
+    },
+    "/api/admin/users/{id}": {
+      "delete": {
+        "tags": ["Admin"],
+        "summary": "Remove a user",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "User's unique ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User successfully deleted"
+          },
+          "500": {
+            "description": "Error occurred while deleting user"
+          }
+        }
+      }
+    },
+
+    "/api/registration": {
+      "post": {
+        "summary": "Register a new user",
+        "description": "Endpoint for registering a new user in the system.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "user@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 32,
+                    "example": "securepassword"
+                  },
+                  "role": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 32,
+                    "example": "user"
+                  }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User successfully registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    },
+                    "tokens": {
+                      "$ref": "#/components/schemas/Tokens"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data"
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "summary": "User login",
+        "description": "Login with email and password to access the system.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "user@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "securepassword"
+                  }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully logged in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    },
+                    "tokens": {
+                      "$ref": "#/components/schemas/Tokens"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Authorization failed"
+          }
+        }
+      }
+    },
+
+    "/api/logout": {
+      "post": {
+        "summary": "Logout user",
+        "description": "Log the user out of the system.",
+        "responses": {
+          "200": {
+            "description": "User successfully logged out"
+          },
+          "400": {
+            "description": "Logout failed"
+          }
+        }
+      }
+    }
+  },
+
+  "VehicleInput": {
+    "type": "object",
+    "properties": {
+      "model": {
+        "type": "string",
+        "description": "The model of the vehicle"
+      },
+      "licensePlate": {
+        "type": "string",
+        "description": "The license plate number of the vehicle"
+      },
+      "year": {
+        "type": "integer",
+        "format": "int32",
+        "description": "The manufacturing year of the vehicle"
+      },
+      "status": {
+        "type": "string",
+        "enum": ["active", "inactive"],
+        "description": "The current status of the vehicle"
+      }
+    },
+    "required": ["model", "licensePlate", "year"]
+  },
+
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "641c9b16f1d2b1f9d4f73985",
+            "description": "Unique identifier for the user"
+          },
+          "email": {
+            "type": "string",
+            "example": "user@example.com",
+            "description": "The email address of the user"
+          },
+          "isActivated": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indicates if the user's account is activated"
+          }
+        }
+      },
+      "Tokens": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR...",
+            "description": "JWT access token for user authentication"
+          },
+          "refreshToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR...",
+            "description": "JWT refresh token for obtaining a new access token"
+          }
+        }
+      },
+      "Data": {
+        "type": "object",
+        "properties": {
+          "temperature": {
+            "type": "number",
+            "description": "Engine temperature",
+            "example": 75.5
+          },
+          "latitude": {
+            "type": "number",
+            "description": "Latitude of the vehicle's location",
+            "example": 50.4501
+          },
+          "longitude": {
+            "type": "number",
+            "description": "Longitude of the vehicle's location",
+            "example": 30.5234
+          },
+          "tirePressure": {
+            "type": "number",
+            "description": "The tire pressure of the vehicle",
+            "example": 32.5
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the data was recorded",
+            "example": "2024-12-30T12:34:56Z"
+          }
+        },
+        "required": ["temperature", "latitude", "longitude", "tirePressure"]
+      },
+      "Vehicle": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "Vehicle model",
+            "example": "Toyota Corolla"
+          },
+          "licensePlate": {
+            "type": "string",
+            "description": "Vehicle's license plate number",
+            "example": "AB1234CD"
+          },
+          "year": {
+            "type": "number",
+            "description": "Year of manufacture of the vehicle",
+            "example": 2018
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "inactive"],
+            "description": "Status of the vehicle",
+            "example": "active"
+          }
+        },
+        "required": ["model", "licensePlate", "year"]
+      }
+    }
+  }
+}
